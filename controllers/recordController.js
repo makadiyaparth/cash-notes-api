@@ -25,7 +25,7 @@ exports.getAllRecords = async (req, res) => {
       query.type = { $eq: type };
     }
 
-    const records = await Record.find(query);
+    const records = await Record.find(query).lean();
 
     res.json(records);
   } catch (err) {
