@@ -14,7 +14,19 @@ exports.createRecord = async (req, res) => {
 
 exports.getAllRecords = async (req, res) => {
   try {
-    const records = await Record.find();
+    const { date, type } = req.query;
+    let query = {};
+
+    if (date) {
+      query.date = { $eq: new Date(date) };
+    }
+
+    if (type) {
+      query.type = { $eq: type };
+    }
+
+    const records = await Record.find(query);
+
     res.json(records);
   } catch (err) {
     console.error(err);
