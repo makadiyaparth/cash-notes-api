@@ -14,10 +14,16 @@ exports.createRecord = async (req, res) => {
 
 exports.getAllRecords = async (req, res) => {
   try {
-    const { date, type } = req.query;
+    const { date, fromDate, toDate, type } = req.query;
     let query = {};
 
-    if (date) {
+    if (fromDate && toDate) {
+      query.date = { $gte: new Date(fromDate), $lte: new Date(toDate) };
+    } else if (fromDate) {
+      query.date = { $gte: new Date(fromDate) };
+    } else if (toDate) {
+      query.date = { $lte: new Date(toDate) };
+    } else if (date) {
       query.date = { $eq: new Date(date) };
     }
 
